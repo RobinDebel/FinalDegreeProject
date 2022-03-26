@@ -1,0 +1,31 @@
+{
+  "name": "device-creator-backend",
+  "version": "1.0.0",
+  "description": "Backend for Device Creator",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon --ignore ./data src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+    
+  },
+  "type": "module",
+  "author": "Robin Debel",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "jsonschema": "^1.4.0",
+    "lodash": "^4.17.21",
+    "lowdb": "^3.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.4",
+    "passport": "^0.5.2",
+    "passport-local": "^1.0.0"
+  }
+}

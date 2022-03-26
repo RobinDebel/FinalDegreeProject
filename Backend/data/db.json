@@ -1,0 +1,29 @@
+{
+  "devices": [
+    {
+      "id": 0,
+      "deviceid": "test-device-weetj",
+      "devicename": "Test-Device",
+      "longitude": "3.2157842",
+      "latitude": "51.1940844",
+      "description": "This is the test device of the device creator app from Robin Debel",
+      "filename": "1641561523413.png"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "admin",
+      "username": "admin",
+      "password": "$2b$10$UvBaZnMCcqByqrfPq2rY2eqV.T20ANAdRjSDD9LMxM4CKbY7eWAai",
+      "filename": "1641561395527.png"
+    },
+    {
+      "id": 2,
+      "email": "robindebel@email.com",
+      "username": "RobinDebel",
+      "password": "$2b$10$SMG9XX5CrOucX/ec9LBdWOKtrAs.W9VoWlMZlq0QaxDHOKlaABYvO",
+      "filename": "1648312696975.png"
+    }
+  ]
+}
