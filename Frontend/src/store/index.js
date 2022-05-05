@@ -1,16 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Devices, Authentication} from "@/api/devicecreator"
+import { NIST, Authentication} from "@/api/finalproject"
  
 Vue.use(Vuex)
 
 export const store =  new Vuex.Store({
   state: {
-    devices: undefined,
-    QRValue: undefined,
     secure: false, 
     user: {},
-    devicevalue: {},
     paramid: null,
   },
 
@@ -21,18 +18,7 @@ export const store =  new Vuex.Store({
   },
 
   mutations: {
-    changeDevices(state,payload) {
-      state.devices = payload.devices;
-    },
-
-    changeDeviceInfo(state,payload){
-      state.devicevalue = payload
-    },
-
-    changeQRValue(state,value) {
-      state.QRValue = value;
-    },
-
+    
     changeSecure(state,value) {
       state.secure = value; 
     },
@@ -52,40 +38,13 @@ export const store =  new Vuex.Store({
       store.commit('changeParamId', message)
     },
 
-    saveQRValue: (store, message) => {
-      console.log(`QR value read: ${message}`)
-      store.commit('changeQRValue',message)
-      
-    },
-
-    getAllDevices({commit} ){
-      return Devices.get_all_devices()
+    sendFileNIST(state, payload){
+      NIST.sendFile(payload)
       .then((response) => {
-
-          commit('changeDevices', {
-              devices: response.data
-          })
-          this.devices = response.data
-      })
-      .catch((error) => console.log(error));
-    },
-
-    getSensorById({commit}, id ){
-      Devices.get_device_by_id(id)
-      .then((response) => {
-        commit('changeDeviceInfo', response.data)
-        
-      })
-      .catch((error) => console.log(error));
-    },
-
-    addDevice(state, payload){
-      Devices.add_device(payload)
-      .then((response) => {
-        this.snackbartext = response
+        console.log(response)
         })
       .catch((err) => {
-          this.snackbartext = err
+          console.log(err)
         });
     },
 

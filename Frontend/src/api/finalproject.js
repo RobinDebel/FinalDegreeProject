@@ -6,19 +6,10 @@ const api = axios.create({
     withCredentials: true,
 })
 
-const Devices = {
+const NIST = {
     resource: 'devices',
 
-    get_all_devices(){
-        
-        return api.get(`/${this.resource}`);
-    },
-
-    get_device_by_id(id){
-        return api.get(`/${this.resource}/${id}`)
-    },
-
-    add_device(json){
+    sendFile(json){
         return api.post(`/${this.resource}`, json);
     }
 }
@@ -38,4 +29,4 @@ const Authentication = {
     }
 }
 
-export { api, Devices, Authentication}
+export { api, NIST, Authentication}

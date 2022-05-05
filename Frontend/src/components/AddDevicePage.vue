@@ -68,6 +68,7 @@
               <v-btn @click="getLocation" block dark color="vlack">Use GPS</v-btn>
           </v-col>
           
+          
         </v-row>
 
         <v-row>

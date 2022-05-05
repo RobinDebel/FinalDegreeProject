@@ -156,7 +156,7 @@ app.post('/devices', upload.single('image'), is_authenticated, (req, res) => {
 
 var id = 0
 
-app.post('/nist', (req, res) => {
+app.post('/nist',upload.single('file'), (req, res) => {
     // console.log(req.file.filename)
 
     console.log(req.body.inputs)
