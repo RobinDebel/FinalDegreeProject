@@ -2,10 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import AddDevice from '@/views/AddDevice.vue'
-import QRScanner from '@/views/QRScanner.vue'
-import DeviceInfo from '@/views/DeviceInfo.vue'
 import RegisterLogin from '@/views/RegisterLogin.vue'
 import ProfilePage from '@/views/ProfilePage'
+import CMC from '@/views/Cmc.vue'
+import NIST from '@/views/Nist.vue'
 
 Vue.use(VueRouter)
 
@@ -16,19 +16,9 @@ const routes = [
     component: Home
   },
   {
-    path: '/devices/:id',
-    name: 'DeviceInfo',
-    component: DeviceInfo
-  },
-  {
     path: '/AddDevice/:id?',
     name: 'AddDevice',
     component: AddDevice
-  },
-  {
-    path:'/AddDevice/QRScanner',
-    name: 'QRScanner',
-    component: QRScanner
   },
   {
     path:'/RegisterLogin',
@@ -43,12 +33,12 @@ const routes = [
   {
     path:'/NIST',
     name: 'NIST',
-    component: ProfilePage
+    component: NIST
   },
   {
-    path:'/CNC',
-    name: 'CNC',
-    component: ProfilePage
+    path:'/CMC',
+    name: 'CMC',
+    component: CMC
   },
 ]
 

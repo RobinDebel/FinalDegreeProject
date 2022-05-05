@@ -1,5 +1,5 @@
 <template>
-  <h1>Implement here</h1>
+  <h1>Implement CMC here</h1>
 </template>
 
 <script>
@@ -7,7 +7,7 @@
 
 
   export default {
-    name: 'Home',
+    name: 'CMC',
 
 
     beforeCreate() {

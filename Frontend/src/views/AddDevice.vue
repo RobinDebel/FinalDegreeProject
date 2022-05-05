@@ -3,7 +3,6 @@
 </template>
 
 <script>
-// import Scanner from '@/components/Scanner.vue'
 import AddDevicePage from '@/components/AddDevicePage.vue'
 
   export default {
