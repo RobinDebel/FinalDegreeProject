@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { NIST, Authentication} from "@/api/finalproject"
+import { Nist, Authentication} from "@/api/finalproject"
  
 Vue.use(Vuex)
 
@@ -39,7 +39,7 @@ export const store =  new Vuex.Store({
     },
 
     sendFileNIST(state, payload){
-      NIST.sendFile(payload)
+      Nist.sendFile(payload)
       .then((response) => {
         console.log(response)
         })

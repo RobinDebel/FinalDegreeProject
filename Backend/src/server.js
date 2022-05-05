@@ -53,7 +53,7 @@ var storage = multer.diskStorage({
         cb(null, './data/uploads')
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now().toString() + ".png")
+        cb(null, file.originalname) //Appending extension
     }
 })
 
@@ -156,7 +156,7 @@ app.post('/devices', upload.single('image'), is_authenticated, (req, res) => {
 
 var id = 0
 
-app.post('/nist',upload.single('file'), (req, res) => {
+app.post('/nist',upload.single('recfile'), (req, res) => {
     // console.log(req.file.filename)
 
     console.log(req.body.inputs)

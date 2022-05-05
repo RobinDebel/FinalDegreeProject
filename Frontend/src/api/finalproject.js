@@ -6,8 +6,8 @@ const api = axios.create({
     withCredentials: true,
 })
 
-const NIST = {
-    resource: 'devices',
+const Nist = {
+    resource: 'Nist',
 
     sendFile(json){
         return api.post(`/${this.resource}`, json);
@@ -29,4 +29,4 @@ const Authentication = {
     }
 }
 
-export { api, NIST, Authentication}
+export { api, Nist, Authentication}

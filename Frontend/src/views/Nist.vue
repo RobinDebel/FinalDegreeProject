@@ -68,7 +68,7 @@
           this.notgood = false
           let form = new FormData();
           form.append("strlength", this.strlength)
-          form.append("file",this.file)
+          form.append("recfile",this.file)
           this.clearData()
           this.$store.dispatch("sendFileNIST", form);
         }
