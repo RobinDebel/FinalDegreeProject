@@ -1,12 +1,18 @@
 <template>
-  <h1>Implement CMC here</h1>
+  <v-container>
+    <h1>Implement CMC here</h1>
+  <statical-tests/>
+  </v-container>
+  
 </template>
 
 <script>
+import StaticalTests from '@/components/StaticalTests.vue'
 
 
 
   export default {
+  components: { StaticalTests },
     name: 'CMC',
 
 
