@@ -13,6 +13,8 @@ import session from 'express-session';
 import is_authenticated from './middleware/authenticated.js';
 import { Users } from './database/database.js';
 import { AuthenticationSchema } from './validation/authentication.js';
+import { spawn } from 'node:child_process';
+import { exec } from 'child_process'
 
 
 
@@ -150,6 +152,62 @@ app.post('/devices', upload.single('image'), is_authenticated, (req, res) => {
             code: 105
         })
     })    
+})
+
+var id = 0
+
+app.post('/nist', (req, res) => {
+    // console.log(req.file.filename)
+
+    console.log(req.body.inputs)
+
+
+    res.status(200).send({
+        id: ++id
+    })
+
+
+    let inputs = req.body.inputs    // []string -> ['0', 'data/data.pi', '1', '1', '100', '0', ...]
+    let args = req.body.args        // []string -> ['100000']
+
+    const nist = spawn('cmd', ['ls'], {
+        args
+    }
+        // cwd: '~/Code/github.com/RobinDebel/FinalDegreeProject/Frontend/nist/sts', // werkt niet
+    );
+
+    // exec('ls', {
+    //     // cwd: '~/Code/github.com/RobinDebel/FinalDegreeProject/Backend/src/nist/sts/assess',
+    //     args
+    // }, (error, stdout, stderr) => {
+    //   if (error) {
+    //       console.log(`error: ${error.message}`);
+    //       return;
+    //   }
+    //   if (stderr) {
+    //       console.log(`stderr: ${stderr}`);
+    //       return;
+    //   }
+    //   console.log(`stdout: ${stdout}`);
+    // });
+
+    nist.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+
+        inputs.forEach(input => {
+            nist.stdin.write(input+"\n")
+        });
+    });
+
+    nist.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    ls.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
+        // ws<-id x is done
+
+    });
 })
 
 await connect();
