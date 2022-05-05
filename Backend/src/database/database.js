@@ -15,9 +15,9 @@ const db = new Low(adapter)
 
 const connect = async () => {
     await db.read();
-    db.data = db.data ||= {}
-    db.data.devices ||= []
-    db.data.users ||= []
+    db.data = db.data || {}
+    db.data.devices || []
+    db.data.users || []
     
 }
 
