@@ -74,6 +74,15 @@
 
 
     </v-row>
+    <v-alert
+      class="ma-3"
+      v-if="notgood"
+      shaped
+      prominent
+      type="warning"
+    >
+      Enter a correct choice from the list above
+    </v-alert>
 
     <v-row>
       <v-col class="d-flex pb-0">
@@ -81,13 +90,13 @@
           class="mr-16"
           label="Choose here what Statistical Test You Want To Use"
           hide-details="auto"
-          v-model="stats"
+          v-model="choice"
         ></v-text-field>
       </v-col>
     </v-row>
 
     <v-row  class="ma-4 mt-8 justify-space-around">
-      <v-btn @click="sendStats" dark color="black">Submit Statistical Test</v-btn>
+      <v-btn @click="sendChoice" dark color="black">Submit Statistical Test</v-btn>
     </v-row>
   </v-container>
 </template>
@@ -98,22 +107,21 @@ name: 'NIST',
     data()
     {
       return{
-        sendStats:null,
+        choice:null,
         notgood: false, 
       }
     },
     methods: {
-      sendFile()
+      sendChoice()
       {
-        if(this.sendStats == null){
+        console.log(Number(this.choice))
+        if(!(Number(this.choice) >= 1 && Number(this.choice) <= 15)){
           this.notgood = true
         } else 
         {
           this.notgood = false
-          let form = new FormData();
-          form.append("sendStats", this.sendStats)
-          this.clearData()
-          this.$store.dispatch("sendFileNIST", form);
+          this.choice = ""
+          // this.$store.dispatch("sendFileNIST", form);
         }
       }
     }

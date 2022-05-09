@@ -1,9 +1,8 @@
 import express from 'express';
 import config from './config/config.js';
 import morgan from 'morgan';
-import { connect, Devices } from './database/database.js';
+import { connect} from './database/database.js';
 import { validate } from 'jsonschema';
-import { DeviceSchema } from './api/validation/devices.js';
 import cors from 'cors';
 import multer from 'multer';
 import bcrypt from 'bcrypt'
@@ -59,11 +58,12 @@ var storage = multer.diskStorage({
 
 const upload = multer({storage: storage})
 
-app.post('/register', upload.single('image'), (req, res) => {
+app.post('/register', (req, res, next) => {
     // Never, ever thrust client side data !
+    console.log(req.body)
     const validation = validate(req.body, AuthenticationSchema.register.body);
     if (!validation.valid) {
-        return res.status(400).send({
+        return res.status(401).send({
             message: 'Invalid user information',
             errors: validation.errors.map(e => e.stack)
         });
@@ -71,7 +71,7 @@ app.post('/register', upload.single('image'), (req, res) => {
 
     bcrypt.hash(req.body.password, 10)
         .then((hashedPassword) => {
-            return Users.create(req.body.email, req.body.username, hashedPassword, req.file.filename)
+            return Users.create(req.body.email, req.body.username, hashedPassword)
         })
         .then((user) => {
             //delete user.password // Don't send back the password
@@ -118,41 +118,6 @@ app.get('/secure', is_authenticated, (req, res) => {
       user: req.user
     })
   })
-
-
-app.get('/devices', is_authenticated, (req, res) => {
-    res.send(Devices.all());
-});
-
-app.get('/devices/:id', is_authenticated ,(req, res) => {
-    res.send(Devices.onedevice(req.params.id))
-});
-
-
-
-app.post('/devices', upload.single('image'), is_authenticated, (req, res) => {
-
-    const validation = validate(req.body, DeviceSchema.create);
-    if(!validation.valid){
-        console.log(validation)
-        res.status(400).send({
-            message: 'JSON validation failed',
-            details: validation.errors.map( e => e.stack)
-        })
-        return;
-    }
-    console.log(req.body)
-    Devices.create(req.body, req.file.filename)
-    .then((device) => {
-        res.status(201).send(device);
-    })
-    .catch(() => {
-        res.status(500).send({
-            message: "Failed to write to JSON db",
-            code: 105
-        })
-    })    
-})
 
 var id = 0
 

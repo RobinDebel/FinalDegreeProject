@@ -21,52 +21,52 @@ const connect = async () => {
     
 }
 
-const Devices = {
-    next_id: () => {
-        const id = Math.max(
-            ...db.data.devices.map(d => d.id)
-        );
-        console.log(id)
-        if(id == null || id <0) {
-            return 0
-        }
-        return (id || 0) + 1;
-    },
+// const Devices = {
+//     next_id: () => {
+//         const id = Math.max(
+//             ...db.data.devices.map(d => d.id)
+//         );
+//         console.log(id)
+//         if(id == null || id <0) {
+//             return 0
+//         }
+//         return (id || 0) + 1;
+//     },
 
-    all: () =>{
-        //return all devices
-        return db.data.devices;
-    },
+//     all: () =>{
+//         //return all devices
+//         return db.data.devices;
+//     },
 
-    onedevice: (val) =>{
-        return db.data.devices.find(d => d.id == val);
-    },
+//     onedevice: (val) =>{
+//         return db.data.devices.find(d => d.id == val);
+//     },
 
-    list: () =>{
-        var boom = db.data.devices
-        return (_.pick(boom, ['id', 'name']))
-    },
+//     list: () =>{
+//         var boom = db.data.devices
+//         return (_.pick(boom, ['id', 'name']))
+//     },
 
-    create: (data, filename) => {
-        const device = {
-            id: Devices.next_id(),
-            deviceid: data.deviceid,
-            devicename: data.devicename,
-            longitude: data.longitude,
-            latitude: data.latitude,
-            description: data.description,
-            filename: filename
-        };
+//     create: (data, filename) => {
+//         const device = {
+//             id: Devices.next_id(),
+//             deviceid: data.deviceid,
+//             devicename: data.devicename,
+//             longitude: data.longitude,
+//             latitude: data.latitude,
+//             description: data.description,
+//             filename: filename
+//         };
 
-        db.data.devices.push(device);
+//         db.data.devices.push(device);
 
-        return new Promise((resolve, reject) => {
-            db.write()
-            .then(() => resolve(device))
-            .catch(() => reject({}))
-        });
-    }
-}
+//         return new Promise((resolve, reject) => {
+//             db.write()
+//             .then(() => resolve(device))
+//             .catch(() => reject({}))
+//         });
+//     }
+// }
 
 
 const Users = {
@@ -75,8 +75,8 @@ const Users = {
       return (id > 0 ? id + 1 : 1);
     },
   
-    create: (email, username , password, filename) => {
-      const obj = { id: Users.next_id(), email: email,username: username, password: password, filename: filename };
+    create: (email, username , password) => {
+      const obj = { id: Users.next_id(), email: email,username: username, password: password};
       db.data.users.push(obj);
       return new Promise((resolve, reject) => {
         db.write()
@@ -97,4 +97,4 @@ const Users = {
     }
   }
 
-export {connect, Devices, Users}
+export {connect, Users}
