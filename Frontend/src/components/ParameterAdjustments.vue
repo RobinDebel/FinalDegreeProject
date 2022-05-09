@@ -80,7 +80,7 @@
           </v-col>
         </v-row>
     </v-card>
-    <h5 class="mt-10" > Input File Format </h5>
+    <h3 class="mt-10" > Input File Format </h3>
 
     <v-card class="pa-2 mb-2">
         <v-row align="center">
@@ -102,7 +102,11 @@
           </v-col>
         </v-row>
     </v-card>
-    <v-text-field v-model="INPUT"> </v-text-field>
+    <v-text-field 
+    v-model="INPUT"
+    label="Choice"> 
+    
+    </v-text-field>
 
     </v-col>
   </v-container>
