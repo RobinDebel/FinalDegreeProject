@@ -22,6 +22,7 @@
                         <v-card-text>
                             <v-form>
                             <v-text-field
+                                v-on:keyup.enter="LoginRegister()"
                                 prepend-icon="mdi-email"
                                 name="Email"
                                 label="Email"
@@ -39,6 +40,7 @@
 
                             ></v-text-field>
                             <v-text-field
+                                v-on:keyup.enter="LoginRegister()"
                                 id="password"
                                 prepend-icon="mdi-lock"
                                 name="password"
