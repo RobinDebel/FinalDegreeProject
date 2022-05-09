@@ -8,7 +8,7 @@ export const store =  new Vuex.Store({
   state: {
     secure: false, 
     user: {},
-    paramid: null,
+
   },
 
   getters:{
@@ -26,17 +26,10 @@ export const store =  new Vuex.Store({
     changeUser(state,value) {
       state.user = value;
     },
-    changeParamId(state,value){
-      state.paramid = value;
-    }
 
   },
 
   actions: {
-
-    paramId:(store,message) => {
-      store.commit('changeParamId', message)
-    },
 
     sendFileNIST(state, payload){
       Nist.sendFile(payload)

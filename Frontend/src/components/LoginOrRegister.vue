@@ -111,14 +111,7 @@ export default {
                             this.notgoodtext = "Credentials not ok"
                         }
                         if(res && res.status == 200){
-                            if(this.$store.state.paramid)
-                            {
-                                this.$router.push({name: 'AddDevice'})
-
-                            }else{
-
-                                this.$router.push({name: 'Home'})
-                            }
+                            this.$router.push({name: 'Home'})
                         }
                     })
                 }

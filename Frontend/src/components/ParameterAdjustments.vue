@@ -107,7 +107,7 @@
     label="Choice">
     </v-text-field>
     <v-row  class="ma-4 mt-8 justify-space-around">
-      <v-btn @click="fileformat" dark color="black">INPUT</v-btn>
+      <v-btn @click="Submit" dark color="black">Submit</v-btn>
     </v-row>
 
     </v-col>

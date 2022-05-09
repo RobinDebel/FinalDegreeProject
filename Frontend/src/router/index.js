@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
-import AddDevice from '@/views/AddDevice.vue'
 import RegisterLogin from '@/views/RegisterLogin.vue'
 import ProfilePage from '@/views/ProfilePage'
 import CMC from '@/views/Cmc.vue'
@@ -14,11 +13,6 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
-  },
-  {
-    path: '/AddDevice/:id?',
-    name: 'AddDevice',
-    component: AddDevice
   },
   {
     path:'/RegisterLogin',
