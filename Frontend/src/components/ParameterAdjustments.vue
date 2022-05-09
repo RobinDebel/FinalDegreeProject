@@ -110,7 +110,25 @@
       <v-btn @click="Submit" dark color="black">Submit</v-btn>
     </v-row>
 
+  <h5> 
+    INSTRUCTIONS
+  </h5>
+  <p>  Enter a 0 or 1 to indicate whether or not the numbered statistical
+            test should be applied to each sequence. </p>
+
+  <p> 123456789111111 </p>
+  <p> 012345 </p>
+
+
+
+
+
     </v-col>
+
+
+
+
+
   </v-container>
 </template>
 
