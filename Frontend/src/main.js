@@ -3,12 +3,8 @@ import Vuex from "vuex"
 import App from './App.vue'
 import router from './router'
 import { store } from './store'
-import VueQrcodeReader from "vue-qrcode-reader";
 import vuetify from './plugins/vuetify'
-import VueGeolocation from 'vue-browser-geolocation';
 
-Vue.use(VueGeolocation);
-Vue.use(VueQrcodeReader);
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
