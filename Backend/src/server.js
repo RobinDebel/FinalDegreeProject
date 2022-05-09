@@ -58,7 +58,7 @@ var storage = multer.diskStorage({
 
 const upload = multer({storage: storage})
 
-app.post('/register', (req, res) => {
+app.post('/register', (req, res, next) => {
     // Never, ever thrust client side data !
     console.log(req.body)
     const validation = validate(req.body, AuthenticationSchema.register.body);
