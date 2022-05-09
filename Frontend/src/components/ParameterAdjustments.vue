@@ -104,9 +104,11 @@
     </v-card>
     <v-text-field 
     v-model="INPUT"
-    label="Choice"> 
-    
+    label="Choice">
     </v-text-field>
+    <v-row  class="ma-4 mt-8 justify-space-around">
+      <v-btn @click="fileformat" dark color="black">INPUT</v-btn>
+    </v-row>
 
     </v-col>
   </v-container>
