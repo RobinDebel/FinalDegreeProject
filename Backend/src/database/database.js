@@ -75,8 +75,8 @@ const Users = {
       return (id > 0 ? id + 1 : 1);
     },
   
-    create: (email, username , password, filename) => {
-      const obj = { id: Users.next_id(), email: email,username: username, password: password, filename: filename };
+    create: (email, username , password) => {
+      const obj = { id: Users.next_id(), email: email,username: username, password: password};
       db.data.users.push(obj);
       return new Promise((resolve, reject) => {
         db.write()

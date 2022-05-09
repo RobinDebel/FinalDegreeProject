@@ -46,8 +46,6 @@
                                 type="password"
                                 v-model="password"
                             ></v-text-field>
-
-                            <v-file-input v-if="screen == 'Register'" label="Add Profile Picture" v-model="file"></v-file-input>
                             </v-form>
                         </v-card-text>
 
@@ -81,7 +79,6 @@ export default {
             email: "",
             username: "",
             password: "",
-            file: null,
             notgood: false,
             notgoodtext: ""
         }
@@ -129,21 +126,21 @@ export default {
             }
             if(this.screen == "Register"){
 
-                if(this.email == "" || this.username == "" || this.password == "" || this.file == null )
+                if(this.email == "" || this.username == "" || this.password == "")
                 {
                     this.notgood = true
                     this.notgoodtext = "Please fill in everything"
                 }
 
                 if(!this.notgood){
-                    let form = new FormData()
-                    form.append("email", this.email)
-                    form.append("username", this.username)
-                    form.append("password", this.password)
-                    form.append("image", this.file)
+                    const json = {
+                    email: this.email,
+                    username: this.username,
+                    password: this.password
+                    }
                     
 
-                    this.$store.dispatch("register", form)
+                    this.$store.dispatch("register", json)
                     .then((res)=>{
                         if(res.status == 200){
                             this.password = ""

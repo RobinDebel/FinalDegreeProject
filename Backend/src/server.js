@@ -58,11 +58,12 @@ var storage = multer.diskStorage({
 
 const upload = multer({storage: storage})
 
-app.post('/register', upload.single('image'), (req, res) => {
+app.post('/register', (req, res) => {
     // Never, ever thrust client side data !
+    console.log(req.body)
     const validation = validate(req.body, AuthenticationSchema.register.body);
     if (!validation.valid) {
-        return res.status(400).send({
+        return res.status(401).send({
             message: 'Invalid user information',
             errors: validation.errors.map(e => e.stack)
         });
@@ -70,7 +71,7 @@ app.post('/register', upload.single('image'), (req, res) => {
 
     bcrypt.hash(req.body.password, 10)
         .then((hashedPassword) => {
-            return Users.create(req.body.email, req.body.username, hashedPassword, req.file.filename)
+            return Users.create(req.body.email, req.body.username, hashedPassword)
         })
         .then((user) => {
             //delete user.password // Don't send back the password
