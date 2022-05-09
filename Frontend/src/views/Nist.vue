@@ -112,6 +112,19 @@ import ParameterAdjustments from '@/components/ParameterAdjustments.vue'
         }
       })
       
+    },
+
+    watch: {
+      "$store.state.staticalTestChoice": {
+        handler: function(choice) {
+          if (choice) {
+            console.log(`${Number(choice)}`)
+            if (choice == 1 ){
+              this.step = 3;
+            }
+          }
+        }
+      }
     }
   }
 </script>

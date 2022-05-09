@@ -117,16 +117,19 @@ name: 'STATICALTESTS',
     methods: {
       sendChoice()
       {
-        console.log(Number(this.choice))
         if(!(Number(this.choice) >= 1 && Number(this.choice) <= 15)){
           this.notgood = true
         } else 
         {
           this.notgood = false
-          this.choice = ""
-          // this.$store.dispatch("sendFileNIST", form);
+          this.$store.dispatch("updateStaticalTestChoice", this.choice)
+          
         }
       }
+    },
+    created(){
+      this.$store.dispatch("updateStaticalTestChoice", null)
+
     }
 }
 </script>

@@ -8,17 +8,24 @@ export const store =  new Vuex.Store({
   state: {
     secure: false, 
     user: {},
+    staticalTestChoice: null, 
 
   },
 
   getters:{
-    devicevalue(state) {
-      return state.devicevalue;
+    
+    staticalTestChoice(state) {
+      return state.staticalTestChoice;
     },
+
   },
 
   mutations: {
-    
+    changeStaticalTestChoice(state,value) {
+     
+      state.staticalTestChoice = value;
+    },
+
     changeSecure(state,value) {
       state.secure = value; 
     },
@@ -76,6 +83,10 @@ export const store =  new Vuex.Store({
 
         return res
       })
+    },
+
+    updateStaticalTestChoice(store,payload){
+      this.commit('changeStaticalTestChoice', payload)
     }
 
 
