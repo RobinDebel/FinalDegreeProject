@@ -4,8 +4,6 @@
       <v-col
         cols="15"
         sm="4"
-        
-      
       >
         <v-card class="pa-2 mb-2">
           [01] Frequency
@@ -38,8 +36,6 @@
         <v-card class="pa-2 mb-2">
           [15] Linear Complexity
         </v-card> 
-        
-        
       </v-col>
 
             <v-col
@@ -122,6 +118,4 @@ name: 'NIST',
       }
     }
 }
-
-
 </script>
