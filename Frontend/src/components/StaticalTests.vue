@@ -1,5 +1,8 @@
 <template>
   <v-container>
+    <div class="pb-7 ">
+        <h1>Statical Tests</h1>
+      </div>
     <v-row >
       <v-col
         cols="15"
@@ -103,7 +106,7 @@
 
 <script>
 export default {
-name: 'NIST',
+name: 'STATICALTESTS',
     data()
     {
       return{

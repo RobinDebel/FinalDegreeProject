@@ -1,21 +1,21 @@
 <template>
   <v-container>
-    <h1>Implement CMC here</h1>
-  <!-- <statical-tests/> -->
-  <parameter-adjustments/>
+    <!-- <h1>Implement CMC here</h1> -->
+   <statical-tests/> 
+    <parameter-adjustments/>
   </v-container>
   
 </template>
 
 <script>
-//import StaticalTests from '@/components/StaticalTests.vue'
+import StaticalTests from '@/components/StaticalTests.vue'
 import ParameterAdjustments from '@/components/ParameterAdjustments.vue'
 
 
 
   export default {
   //components: { StaticalTests },
-  components:{ParameterAdjustments},
+  components:{ParameterAdjustments,StaticalTests },
     name: 'CMC',
 
 

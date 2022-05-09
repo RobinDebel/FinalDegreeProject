@@ -17,6 +17,12 @@
       "email": "robindebel@hotmail.nl",
       "username": "admin",
       "password": "$2b$10$sYT/Ga34/USOTxCUc5bAIONtOBWG.QiCdxv/rjulID3ODhccbCdky"
+    },
+    {
+      "id": 4,
+      "email": "desi@hotmail.it",
+      "username": "Bella",
+      "password": "$2b$10$OnSJQM5Pd6xWkasbk75WYOTugSDFJZX4NSEALzadcKUdUCRwextcS"
     }
   ]
 }

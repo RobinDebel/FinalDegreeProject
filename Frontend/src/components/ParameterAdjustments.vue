@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-row>
-      <div class="text-decoration-underline">
-        <h1>Parameter Adjustments</h1>
+      <div class="pb-7">
+        <h1 class="">Parameter Adjustments</h1>
       </div>
     </v-row>
     <v-col cols="15" sm="6">
@@ -56,7 +56,7 @@
             [5] Serial Test - block length(m)
           </v-col>
           <v-col cols="12" sm="6">
-            <v-text-field v-model="ST"> </v-text-field>
+            <v-text-field   v-model="ST"> </v-text-field>
           </v-col>
         </v-row>
     </v-card>
@@ -75,5 +75,17 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name:"PARAMETERADJUSTMENTS",
+  data(){
+    return{
+      BFT: 128,
+      NTT: 9,
+      OTT: 9,
+      AET: 10,
+      ST: 16,
+      LCT: 500
+    }
+  }
+};
 </script>
