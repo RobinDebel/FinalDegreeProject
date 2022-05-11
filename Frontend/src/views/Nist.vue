@@ -52,9 +52,14 @@
       </div>
       <!-- end Step 2 -->
       <!-- start Step 3 -->
-      <div v-if="step == 3">
+      <div v-if="step == 3 & isFrequency == true">
         <parameter-adjustments/>
       </div>
+      <!-- end Step 3 -->
+      <div v-if="(step == 4 & isFrequency == true)| (step == 3 & isFrequency == false) ">
+        <each-sequence/>
+      </div>
+
 
   
 
@@ -65,9 +70,10 @@
 
 import StaticalTests from '@/components/StaticalTests.vue'
 import ParameterAdjustments from '@/components/ParameterAdjustments.vue'
+import EachSequence from '@/components/EachSequence.vue'
 
   export default {
-  components: { StaticalTests, ParameterAdjustments },
+  components: { StaticalTests, ParameterAdjustments, EachSequence },
     name: 'NIST',
     data()
     {
@@ -75,7 +81,8 @@ import ParameterAdjustments from '@/components/ParameterAdjustments.vue'
         step: 1,
         file:null,
         strlength:null,
-        notgood: false, 
+        notgood: false,
+        isFrequency: false, 
       }
     },
     methods: {
@@ -118,13 +125,22 @@ import ParameterAdjustments from '@/components/ParameterAdjustments.vue'
       "$store.state.staticalTestChoice": {
         handler: function(choice) {
           if (choice) {
-            console.log(`${Number(choice)}`)
+            this.step = 3;
             if (choice == 1 ){
-              this.step = 3;
+              this.isFrequency = true; 
             }
           }
         }
-      }
+      },
+        "$store.state.backToMenu": {
+        handler: function(bool) {
+          if (bool) {
+            this.step++
+            this.$store.dispatch("updateBackToMenu", false)
+
+          }
+        }
+      },
     }
   }
 </script>

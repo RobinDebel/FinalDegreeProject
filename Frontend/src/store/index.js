@@ -9,7 +9,7 @@ export const store =  new Vuex.Store({
     secure: false, 
     user: {},
     staticalTestChoice: null, 
-
+    backToMenu: false
   },
 
   getters:{
@@ -21,6 +21,10 @@ export const store =  new Vuex.Store({
   },
 
   mutations: {
+    changeBackToMenu(state,value) {
+      state.backToMenu = value
+    },
+
     changeStaticalTestChoice(state,value) {
      
       state.staticalTestChoice = value;
@@ -87,7 +91,11 @@ export const store =  new Vuex.Store({
 
     updateStaticalTestChoice(store,payload){
       this.commit('changeStaticalTestChoice', payload)
-    }
+    },
+
+    updateBackToMenu(store,payload){
+      this.commit('changeBackToMenu', payload)
+    },
 
 
 
