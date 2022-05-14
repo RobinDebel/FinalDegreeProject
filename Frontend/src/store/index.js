@@ -10,7 +10,8 @@ export const store =  new Vuex.Store({
     user: {},
     staticalTestChoice: null, 
     backToMenu: false,
-    form: null
+    inputs: [],
+    file: null
   },
 
   getters:{
@@ -39,12 +40,23 @@ export const store =  new Vuex.Store({
       state.user = value;
     },
 
+    changeFile(state,value){
+      state.file = value;
+    },
+
+    addInputs(state,value){
+      state.inputs.push(value)
+    }
+
   },
 
   actions: {
 
-    sendFileNIST(state){
-      Nist.sendFile(state.form)
+    sendFileNIST(){
+      let form = new FormData()
+      form.append("recfile", this.state.file)
+      form.append("inputs", this.state.inputs)
+      Nist.sendFile(form)
       .then((response) => {
         console.log(response)
         })
@@ -98,8 +110,18 @@ export const store =  new Vuex.Store({
       this.commit('changeBackToMenu', payload)
     },
 
-    newForm(state){
-      state.state.form = new FormData()
+    updateFile(store,payload){
+      this.commit('changeFile', payload)
+    },
+
+    pushInputs(state,payload) {
+      this.commit('addInputs', String(payload))
+      console.log(state.state.inputs)
+    },
+
+    resetNIST(){
+      this.commit('changeFile', null)
+      this.state.inputs = []
     }
 
 

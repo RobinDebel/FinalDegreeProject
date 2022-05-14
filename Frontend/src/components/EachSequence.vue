@@ -34,8 +34,11 @@ export default {
   },
   methods:{
     Submit(){
-      this.$store.state.form.append("eachsequence", this.each)
-      this.$store.dispatch("sendFileNIST")
+      if(this.each){
+        this.$store.dispatch("pushInputs", '1')
+      } else {
+        this.$store.dispatch("pushInputs", '0')
+      }
       this.$store.dispatch("updateBackToMenu", true)
     }
   }

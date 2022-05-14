@@ -130,13 +130,20 @@ export default {
   },
   methods:{
     Submit(){
-      this.$store.state.form.append("BFT", this.BFT)
-      this.$store.state.form.append("NTT", this.NTT)
-      this.$store.state.form.append("OTT", this.OTT)
-      this.$store.state.form.append("AET", this.AET)
-      this.$store.state.form.append("ST", this.ST)
-      this.$store.state.form.append("LCT", this.BIT)
-      this.$store.state.form.append("fileformat", this.fileformat)
+    
+      let count = 1
+      Object.keys(this.$data).forEach(key => {
+        if(count <= 6 ){
+          this.$store.dispatch("pushInputs", count)
+          this.$store.dispatch("pushInputs", this.$data[key])
+        } 
+        count++
+      })
+
+      this.$store.dispatch("pushInputs", this.BIT)
+      this.$store.dispatch("pushInputs", this.fileformat)
+
+
       this.$store.dispatch("updateBackToMenu", true)
     }
   }

@@ -63,15 +63,15 @@ export default {
             } else 
             {
                 this.notgood = false
-                this.$store.state.form.append("strlength", this.strlength)
-                this.$store.state.form.append("recfile", this.file)
+                this.$store.dispatch("pushInputs", this.strlength)
+                this.$store.dispatch("updateFile", this.file)
                 this.$store.dispatch("updateBackToMenu", true)
             }
         }   
 
     },
     created(){
-        this.$store.dispatch("newForm",null)
+        this.$store.dispatch("resetNIST")
     } 
 };
 </script>

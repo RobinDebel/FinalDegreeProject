@@ -122,7 +122,7 @@ name: 'STATICALTESTS',
         } else 
         {
           this.notgood = false
-          this.$store.state.form.append("StaticalTestChoice", this.choice)
+          this.$store.dispatch("pushInputs", this.choice)
           this.$store.dispatch("updateStaticalTestChoice", this.choice)
           
         }

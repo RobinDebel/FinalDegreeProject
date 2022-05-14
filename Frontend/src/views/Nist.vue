@@ -14,11 +14,11 @@
       <div v-if="step == 3 & isFrequency == true">
         <parameter-adjustments/>
       </div>
-      <!-- end Step 3 -->
-      <div v-if="(step == 4 & isFrequency == true)| (step == 3 & isFrequency == false) ">
+      
+      <div v-if="(step == 3 & isFrequency == false) ">
         <each-sequence/>
       </div>
-
+      <!-- end Step 3 -->
 
   
 
@@ -75,7 +75,8 @@ import FileUpload from '@/components/FileUpload.vue'
             this.$store.dispatch("updateBackToMenu", false)
 
             console.log("Step: " + this.step)
-            if( (this.step > 4) | (this.step > 3 & this.isFrequency == false)){
+            if( (this.step >= 4)){
+              this.$store.dispatch("sendFileNIST")
               this.step = 1
             }
 
