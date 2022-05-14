@@ -52,7 +52,7 @@ var storage = multer.diskStorage({
         cb(null, './data/uploads')
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname) //Appending extension
+        cb(null, Date.now() + file.originalname) //Appending extension
     }
 })
 
@@ -122,9 +122,9 @@ app.get('/secure', is_authenticated, (req, res) => {
 var id = 0
 
 app.post('/nist',upload.single('recfile'), (req, res) => {
-    console.log("filename" + req.file.filename)
+    console.log("filename: " + req.file.filename)
 
-    console.log(req.body)
+    console.log(req.body.inputs)
 
 
     res.status(200).send({
@@ -156,13 +156,13 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
             //   console.log(`stdout: ${stdout}`);
             // });
 
-    // nist.stdout.on('data', (data) => {
-    //     console.log(`stdout: ${data}`);
+    nist.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
 
-    //     inputs.forEach(input => {
-    //         nist.stdin.write(input+"\n")
-    //     });
-    // });
+        inputs.forEach(input => {
+            nist.stdin.write(input+"\n")
+        });
+    });
 
     nist.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
