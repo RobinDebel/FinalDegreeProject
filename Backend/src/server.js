@@ -122,9 +122,9 @@ app.get('/secure', is_authenticated, (req, res) => {
 var id = 0
 
 app.post('/nist',upload.single('recfile'), (req, res) => {
-    // console.log(req.file.filename)
+    console.log("filename" + req.file.filename)
 
-    console.log(req.body.inputs)
+    console.log(req.body)
 
 
     res.status(200).send({
@@ -141,28 +141,28 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
         // cwd: '~/Code/github.com/RobinDebel/FinalDegreeProject/Frontend/nist/sts', // werkt niet
     );
 
-    // exec('ls', {
-    //     // cwd: '~/Code/github.com/RobinDebel/FinalDegreeProject/Backend/src/nist/sts/assess',
-    //     args
-    // }, (error, stdout, stderr) => {
-    //   if (error) {
-    //       console.log(`error: ${error.message}`);
-    //       return;
-    //   }
-    //   if (stderr) {
-    //       console.log(`stderr: ${stderr}`);
-    //       return;
-    //   }
-    //   console.log(`stdout: ${stdout}`);
+            // exec('ls', {
+            //     // cwd: '~/Code/github.com/RobinDebel/FinalDegreeProject/Backend/src/nist/sts/assess',
+            //     args
+            // }, (error, stdout, stderr) => {
+            //   if (error) {
+            //       console.log(`error: ${error.message}`);
+            //       return;
+            //   }
+            //   if (stderr) {
+            //       console.log(`stderr: ${stderr}`);
+            //       return;
+            //   }
+            //   console.log(`stdout: ${stdout}`);
+            // });
+
+    // nist.stdout.on('data', (data) => {
+    //     console.log(`stdout: ${data}`);
+
+    //     inputs.forEach(input => {
+    //         nist.stdin.write(input+"\n")
+    //     });
     // });
-
-    nist.stdout.on('data', (data) => {
-        console.log(`stdout: ${data}`);
-
-        inputs.forEach(input => {
-            nist.stdin.write(input+"\n")
-        });
-    });
 
     nist.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);

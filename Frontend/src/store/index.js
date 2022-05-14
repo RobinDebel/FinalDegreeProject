@@ -9,7 +9,8 @@ export const store =  new Vuex.Store({
     secure: false, 
     user: {},
     staticalTestChoice: null, 
-    backToMenu: false
+    backToMenu: false,
+    form: null
   },
 
   getters:{
@@ -42,8 +43,8 @@ export const store =  new Vuex.Store({
 
   actions: {
 
-    sendFileNIST(state, payload){
-      Nist.sendFile(payload)
+    sendFileNIST(state){
+      Nist.sendFile(state.form)
       .then((response) => {
         console.log(response)
         })
@@ -96,6 +97,10 @@ export const store =  new Vuex.Store({
     updateBackToMenu(store,payload){
       this.commit('changeBackToMenu', payload)
     },
+
+    newForm(state){
+      state.state.form = new FormData()
+    }
 
 
 

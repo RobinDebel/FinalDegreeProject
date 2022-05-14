@@ -2,48 +2,7 @@
   <v-container>
     <!-- Start step 1 -->
       <div v-if="step == 1">
-      <v-row>
-          <v-col>
-            <p class="text-h2 text-center">NIST</p>
-            <p class="text-subtitle-1 text-center">
-              Upload ur file here
-            </p>
-          </v-col>
-        </v-row>
-
-        <v-row>
-            <v-col class="d-flex pb-0" >
-              <v-text-field
-                class="mr-14"
-                label="Stream Length (Length of the individual bit stream(s) to be processed"
-                hide-details="auto"
-                v-model="strlength"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-
-        <v-row>
-              <v-col class="pt-0" >
-                <v-file-input
-                label="Upload file here" 
-                v-model="file">
-                </v-file-input>
-              </v-col>
-        </v-row>
-
-        <v-alert
-        class="ma-3"
-        v-if="notgood"
-        shaped
-        prominent
-        type="warning"
-      >
-        Please fill in everything
-      </v-alert>
-        
-        <v-row  class="ma-4 justify-space-around">
-          <v-btn @click="sendFile" dark color="black">Submit file</v-btn>
-        </v-row>
+        <file-upload/>
       </div>
       <!-- end Step 1 -->
       <!-- start Step 2 -->
@@ -71,43 +30,17 @@
 import StaticalTests from '@/components/StaticalTests.vue'
 import ParameterAdjustments from '@/components/ParameterAdjustments.vue'
 import EachSequence from '@/components/EachSequence.vue'
+import FileUpload from '@/components/FileUpload.vue'
 
   export default {
-  components: { StaticalTests, ParameterAdjustments, EachSequence },
+  components: { StaticalTests, ParameterAdjustments, EachSequence,FileUpload },
     name: 'NIST',
     data()
     {
       return{
         step: 1,
-        file:null,
-        strlength:null,
-        notgood: false,
         isFrequency: false, 
       }
-    },
-    methods: {
-      sendFile()
-      {
-        if(this.strlength == null || this.file == null){
-          this.notgood = true
-        } else 
-        {
-          this.notgood = false
-          let form = new FormData();
-          form.append("strlength", this.strlength)
-          form.append("recfile",this.file)
-          this.step++;
-          
-        }
-      },
-
-      clearData(){
-      this.$store.state.QRValue = ""
-      Object.keys(this.$data).forEach(key => {
-        this.$data[key] = ""
-      })
-      this.file = null
-    },
     },
 
 
@@ -125,9 +58,12 @@ import EachSequence from '@/components/EachSequence.vue'
       "$store.state.staticalTestChoice": {
         handler: function(choice) {
           if (choice) {
-            this.step = 3;
+            this.step++
             if (choice == 1 ){
               this.isFrequency = true; 
+            }
+            else {
+              this.isFrequency = false; 
             }
           }
         }
@@ -137,6 +73,11 @@ import EachSequence from '@/components/EachSequence.vue'
           if (bool) {
             this.step++
             this.$store.dispatch("updateBackToMenu", false)
+
+            console.log("Step: " + this.step)
+            if( (this.step > 4) | (this.step > 3 & this.isFrequency == false)){
+              this.step = 1
+            }
 
           }
         }

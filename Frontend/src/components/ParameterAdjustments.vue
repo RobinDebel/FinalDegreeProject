@@ -103,7 +103,7 @@
         </v-row>
     </v-card>
     <v-text-field 
-    v-model="INPUT"
+    v-model="fileformat"
     label="Choice">
     </v-text-field>
     <v-row  class="ma-4 mt-8 justify-space-around">
@@ -125,10 +125,18 @@ export default {
       ST: 16,
       LCT: 500,
       BIT: null,
+      fileformat: null,
     }
   },
   methods:{
     Submit(){
+      this.$store.state.form.append("BFT", this.BFT)
+      this.$store.state.form.append("NTT", this.NTT)
+      this.$store.state.form.append("OTT", this.OTT)
+      this.$store.state.form.append("AET", this.AET)
+      this.$store.state.form.append("ST", this.ST)
+      this.$store.state.form.append("LCT", this.BIT)
+      this.$store.state.form.append("fileformat", this.fileformat)
       this.$store.dispatch("updateBackToMenu", true)
     }
   }
