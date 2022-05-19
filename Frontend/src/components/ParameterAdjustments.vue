@@ -139,7 +139,7 @@ export default {
         } 
         count++
       })
-
+      this.$store.dispatch("pushInputs", "0")
       this.$store.dispatch("pushInputs", this.BIT)
       this.$store.dispatch("pushInputs", this.fileformat)
 
