@@ -122,24 +122,69 @@ app.get('/secure', is_authenticated, (req, res) => {
 var id = 0
 
 app.post('/nist',upload.single('recfile'), (req, res) => {
-    console.log("filename: " + req.file.filename)
+   console.log("filename: " + req.file.filename)
 
-    console.log(req.body.inputs)
-
-
+    
+    
     res.status(200).send({
         id: ++id
     })
+    
+    
+    var inputs = req.body.inputs.split(",")    // []string -> ['0', 'data/data.pi', '1', '1', '100', '0', ...]
+    let cmd = inputs[0]        // []string -> ['100000']
+    inputs.shift()
+    
+    // const args = [0, `../Backend/data/uploads/data.pi`, ...inputs]
+    const args = [0, `../Backend/data/uploads/${req.file.filename}`, ...inputs]
+    // const args = [0, `data/data.pi`, '1', '0', '10', '0']
+    
+    console.log(cmd)
+    console.log(args)
+    console.log('wsl', './assess', cmd)
 
+    // let nist = spawn('wsl', ['ls', '-lsa'], {
+    let nist = spawn('wsl', ['./assess', cmd], {
+        cwd: '../sts-2.1.2'
+    })
 
-    let inputs = req.body.inputs    // []string -> ['0', 'data/data.pi', '1', '1', '100', '0', ...]
-    let args = req.body.args        // []string -> ['100000']
+    nist.stdin.setEncoding('utf-8')
 
-    const nist = spawn('cmd', ['ls'], {
-        args
-    }
-        // cwd: '~/Code/github.com/RobinDebel/FinalDegreeProject/Frontend/nist/sts', // werkt niet
-    );
+    nist.stdout.pipe(process.stdout)
+
+    // nist.stdin.write("0\ndata/data.pi\n")
+
+    // nist.stdout.once('data', (data) => {
+    //     console.log('stdout once')
+    //     console.log(data.toString())
+
+    //     args.forEach(arg => {
+    //         nist.stdin.write(arg+'\n')
+    //     })
+    // })
+
+    let i = 0
+
+    args.forEach((arg) => {
+        nist.stdin.write(arg+'\n')
+    })
+
+    // nist.stdin.write(args[i++]+'\n')
+
+    nist.stdout.on('data', (data) => {
+        console.log('stdout')
+        console.log(data.toString())
+    })
+
+    nist.stderr.on('data', function (data) {
+        console.log('stderr: ' + data.toString());
+    })
+      
+    nist.on('exit', function (code) {
+        console.log('child process exited with code ' + code.toString()); //if code = 1 dan file ophalen fs 
+    })
+
+    nist.stdin.end()
 
             // exec('ls', {
             //     // cwd: '~/Code/github.com/RobinDebel/FinalDegreeProject/Backend/src/nist/sts/assess',
@@ -156,23 +201,25 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
             //   console.log(`stdout: ${stdout}`);
             // });
 
-    nist.stdout.on('data', (data) => {
-        console.log(`stdout: ${data}`);
+    // nist.stdout.on('data', (data) => {
+    //     console.log(`stdout: ${data}`);
 
-        inputs.forEach(input => {
-            nist.stdin.write(input+"\n")
-        });
-    });
+    //     // inputs.forEach(input => {
+    //     //     nist.stdin.write(input+"\n")
+    //     // });
+    // });
 
-    nist.stderr.on('data', (data) => {
-        console.error(`stderr: ${data}`);
-    });
+    // nist.stderr.on('data', (data) => {
+    //     console.error(`stderr: ${data}`);
+    // });
 
-    ls.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
-        // ws<-id x is done
+    console.log('done')
 
-    });
+    // ls.on('close', (code) => {
+    //     console.log(`child process exited with code ${code}`);
+    //     // ws<-id x is done
+
+    // });
 })
 
 await connect();
