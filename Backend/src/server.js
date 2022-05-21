@@ -17,6 +17,9 @@ import { exec } from 'child_process';
 import nodemailer from 'nodemailer'
 import { fileURLToPath } from 'node:url';
 import path from 'path';
+import fs from 'fs';
+
+
 
 
 
@@ -57,6 +60,8 @@ var mail = nodemailer.createTransport({
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+
 
 
 app.get('/', (req,res) => {
@@ -173,6 +178,9 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
 
     nist.stdout.pipe(process.stdout)
 
+    const logging = fs.createWriteStream(`./data/logs/${req.file.filename.split('.')[0]}.log`, { flags: 'a' });
+    nist.stdout.pipe(logging);
+
     // nist.stdin.write("0\ndata/data.pi\n")
 
     // nist.stdout.once('data', (data) => {
@@ -203,28 +211,46 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
       
     nist.on('exit', function (code) {
         console.log('child process exited with code ' + code.toString()); //if code = 1 dan file ophalen fs 
+        var mailOptions
         if(code == 1){
-            var mailOptions = {
+            mailOptions = {
                 from: 'nistoutput@gmail.com',
                 to: req.body.email,
-                subject: 'Your output file',
-                text: 'This is the output file of your latest NIST request',
-                attachments: [{
+                subject: 'Latest NIST request succes',
+                text: 'This is the output file of your latest NIST request.',
+                attachments: [
+                    {
                        // filename and content type is derived from path
-                    path: __dirname + './../../sts-2.1.2/experiments/AlgorithmTesting/finalAnalysisReport.txt'
-                    
-                }]
+                        path: __dirname + './../../sts-2.1.2/experiments/AlgorithmTesting/finalAnalysisReport.txt'
+                    },
+                    {
+                        path: __dirname + `./../data/logs/${req.file.filename.split('.')[0]}.log`
+                    }
+                ]
               };
                 
-              mail.sendMail(mailOptions, function(error, info){
+              
+              
+        }else{
+            mailOptions = {
+                from: 'nistoutput@gmail.com',
+                to: req.body.email,
+                subject: 'Latest NIST Request fail',
+                text: 'Ur latest NIST request excited with an error, check the variables or file and try again.',
+                attachments: [
+                {
+                    path: __dirname + `./../data/logs/${req.file.filename.split('.')[0]}.log`
+                }
+            ]
+            }
+        }
+        mail.sendMail(mailOptions, function(error, info){
                 if (error) {
                   console.log(error);
                 } else {
                   console.log('Email sent: ' + info.response);
                 }
               });
-              
-        }
     })
 
     nist.stdin.end()
