@@ -23,6 +23,18 @@
       "email": "desi@hotmail.it",
       "username": "Bella",
       "password": "$2b$10$OnSJQM5Pd6xWkasbk75WYOTugSDFJZX4NSEALzadcKUdUCRwextcS"
+    },
+    {
+      "id": 5,
+      "email": "robindebel@hotmail.nl",
+      "username": "admin",
+      "password": "$2b$10$Ha3fUjV7WNYV8sZoRNqFuO7SDWr3TS4j0nQYfpHNLz8Dl7XY/CKtC"
+    },
+    {
+      "id": 6,
+      "email": "seppe.dewitt@gmail.com",
+      "username": "Admin maar minder",
+      "password": "$2b$10$.fXy8uCssSG7eCbO2HaX7uvFxAMJm05tLtYIq51KkPRKhYmtSXR9a"
     }
   ]
 }

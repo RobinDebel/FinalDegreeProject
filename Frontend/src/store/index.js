@@ -56,6 +56,7 @@ export const store =  new Vuex.Store({
       let form = new FormData()
       form.append("recfile", this.state.file)
       form.append("inputs", this.state.inputs)
+      form.append("email", this.state.user.email)
       Nist.sendFile(form)
       .then((response) => {
         console.log(response)
@@ -77,6 +78,7 @@ export const store =  new Vuex.Store({
       .then((res) => {
         this.commit("changeSecure", true)
         this.commit("changeUser", res.data)
+        console.log(this.state.user.email)
         return res
       })
       .catch((err) => {

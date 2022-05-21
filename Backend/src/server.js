@@ -13,7 +13,11 @@ import is_authenticated from './middleware/authenticated.js';
 import { Users } from './database/database.js';
 import { AuthenticationSchema } from './validation/authentication.js';
 import { spawn } from 'node:child_process';
-import { exec } from 'child_process'
+import { exec } from 'child_process';
+import nodemailer from 'nodemailer'
+import { fileURLToPath } from 'node:url';
+import path from 'path';
+
 
 
 
@@ -40,9 +44,24 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Email server
+
+
+var mail = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'nistoutput@gmail.com',
+        pass: 'secretpassword'
+    }
+    });
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+
 app.get('/', (req,res) => {
     res.send({
-        message: 'Welcome to Cevice Creator API',
+        message: 'Welcome to Device Creator API',
         version: `${process.env.npm_package_version}`
     })
 })
@@ -124,6 +143,8 @@ var id = 0
 app.post('/nist',upload.single('recfile'), (req, res) => {
    console.log("filename: " + req.file.filename)
 
+   console.log(req.body.email)
+
     
     
     res.status(200).send({
@@ -182,6 +203,28 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
       
     nist.on('exit', function (code) {
         console.log('child process exited with code ' + code.toString()); //if code = 1 dan file ophalen fs 
+        if(code == 1){
+            var mailOptions = {
+                from: 'nistoutput@gmail.com',
+                to: req.body.email,
+                subject: 'Your output file',
+                text: 'This is the output file of your latest NIST request',
+                attachments: [{
+                       // filename and content type is derived from path
+                    path: __dirname + './../../sts-2.1.2/experiments/AlgorithmTesting/finalAnalysisReport.txt'
+                    
+                }]
+              };
+                
+              mail.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+              
+        }
     })
 
     nist.stdin.end()
