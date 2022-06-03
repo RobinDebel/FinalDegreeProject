@@ -1,26 +1,17 @@
 <template>
   <v-container>
-    <!-- <h1>Implement CMC here</h1> -->
-    <each-sequence/>
-   <statical-tests/> 
-    <parameter-adjustments/>
+    <FileUploadCMC/>
   </v-container>
   
 </template>
 
 <script>
-import StaticalTests from '@/components/StaticalTests.vue'
-import ParameterAdjustments from '@/components/ParameterAdjustments.vue'
-import EachSequence from '@/components/EachSequence.vue'
-
-
+import FileUploadCMC from '@/components/FileUploadCMC.vue'
 
   export default {
-  //components: { StaticalTests },
-  components:{ParameterAdjustments,StaticalTests,EachSequence },
+    components:{ FileUploadCMC},
+
     name: 'CMC',
-
-
     beforeCreate() {
 
       this.$store.dispatch("askSecure")

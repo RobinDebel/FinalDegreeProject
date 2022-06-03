@@ -6,6 +6,14 @@ const api = axios.create({
     withCredentials: true,
 })
 
+const CMC = {
+    resource: 'Cmc', 
+
+    sendFile(json){
+        return api.post(`/${this.resource}`, json);
+    }
+}
+
 const Nist = {
     resource: 'Nist',
 
@@ -29,4 +37,4 @@ const Authentication = {
     }
 }
 
-export { api, Nist, Authentication}
+export { api, CMC ,Nist, Authentication}

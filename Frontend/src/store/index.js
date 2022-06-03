@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Nist, Authentication} from "@/api/finalproject"
+import { CMC, Nist, Authentication} from "@/api/finalproject"
  
 Vue.use(Vuex)
 
@@ -11,7 +11,9 @@ export const store =  new Vuex.Store({
     staticalTestChoice: null, 
     backToMenu: false,
     inputs: [],
-    file: null
+    file: null,
+    cmcfile: null
+
   },
 
   getters:{
@@ -46,11 +48,26 @@ export const store =  new Vuex.Store({
 
     addInputs(state,value){
       state.inputs.push(value)
+    },
+
+    changeCMCFile(state,value){
+      state.cmcfile = value
     }
 
   },
 
   actions: {
+
+    sendFileCMC(){
+      let form = new FormData()
+      form.append("recfile", this.state.cmcfile)
+      CMC.sendFile(form).then((response) => {
+        console.log(response)
+        })
+      .catch((err) => {
+          console.log(err)
+        });
+    },
 
     sendFileNIST(){
       let form = new FormData()
@@ -116,18 +133,25 @@ export const store =  new Vuex.Store({
       this.commit('changeFile', payload)
     },
 
+    updateCMCFile(store,payload){
+      this.commit('changeCMCFile', payload)
+    },
+
     pushInputs(state,payload) {
       this.commit('addInputs', String(payload))
       console.log(state.state.inputs)
     },
 
+
     resetNIST(){
       this.commit('changeFile', null)
       this.state.inputs = []
+    },
+
+    resetCMC(){
+      this.commit('changeFile', null)
+      this.state.cmcfile = null
     }
-
-
-
-
+  
   },
 })
