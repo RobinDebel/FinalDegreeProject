@@ -30,7 +30,7 @@ export default {
     },
     updateNavBar(){
       if(this.logout){
-        this.links = ["Home", "NIST", "CMC" ,   "Profile"]
+        this.links = ["NIST", "CMC" ,   "Profile"]
       } else {
         this.links = ["Login/Register" ]
       }

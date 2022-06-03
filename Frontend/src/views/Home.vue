@@ -16,6 +16,9 @@
       .then((res) => {
         if(!res.data.secure){
           this.$router.push({name: 'Login/Register'})
+        }else{
+          
+          this.$router.push({name: 'NIST'})
         }
       })
       
