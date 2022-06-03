@@ -3,8 +3,11 @@
         <v-card
         class="mx-auto my-12 justify-center"
         >
-
-            <v-card-title>{{user.username}}</v-card-title>
+            <v-img
+        
+        src="https://cdn.iconscout.com/icon/free/png-256/account-avatar-profile-human-man-user-30448.png"
+      ></v-img>
+      <v-card-title>{{user.username}}</v-card-title>
             <v-card-text>Email: {{user.email}}</v-card-text>
         </v-card>
     </div>
