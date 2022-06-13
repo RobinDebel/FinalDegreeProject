@@ -52,6 +52,7 @@ export default {
             {
                 this.$store.dispatch('updateCMCFile', this.file)
                 this.$store.dispatch('sendFileCMC')
+                this.data.file = null
             }
         }   
 
