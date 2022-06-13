@@ -51,6 +51,7 @@ export default {
             } else 
             {
                 this.$store.dispatch('updateCMCFile', this.file)
+                this.$store.dispatch('sendFileCMC')
             }
         }   
 

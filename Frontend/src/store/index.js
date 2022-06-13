@@ -61,6 +61,7 @@ export const store =  new Vuex.Store({
     sendFileCMC(){
       let form = new FormData()
       form.append("recfile", this.state.cmcfile)
+      form.append("email", this.state.user.email)
       CMC.sendFile(form).then((response) => {
         console.log(response)
         })

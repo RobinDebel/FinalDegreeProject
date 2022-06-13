@@ -54,7 +54,7 @@ var mail = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'nistoutput@gmail.com',
-        pass: 'secretpassword'
+        pass: 'qjbcbhltvymgbxhj'
     }
     });
 
@@ -181,24 +181,13 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
     const logging = fs.createWriteStream(`./data/logs/${req.file.filename.split('.')[0]}.log`, { flags: 'a' });
     nist.stdout.pipe(logging);
 
-    // nist.stdin.write("0\ndata/data.pi\n")
-
-    // nist.stdout.once('data', (data) => {
-    //     console.log('stdout once')
-    //     console.log(data.toString())
-
-    //     args.forEach(arg => {
-    //         nist.stdin.write(arg+'\n')
-    //     })
-    // })
-
     let i = 0
 
     args.forEach((arg) => {
         nist.stdin.write(arg+'\n')
     })
 
-    // nist.stdin.write(args[i++]+'\n')
+
 
     nist.stdout.on('data', (data) => {
         console.log('stdout')
@@ -255,41 +244,93 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
 
     nist.stdin.end()
 
-            // exec('ls', {
-            //     // cwd: '~/Code/github.com/RobinDebel/FinalDegreeProject/Backend/src/nist/sts/assess',
-            //     args
-            // }, (error, stdout, stderr) => {
-            //   if (error) {
-            //       console.log(`error: ${error.message}`);
-            //       return;
-            //   }
-            //   if (stderr) {
-            //       console.log(`stderr: ${stderr}`);
-            //       return;
-            //   }
-            //   console.log(`stdout: ${stdout}`);
-            // });
-
-    // nist.stdout.on('data', (data) => {
-    //     console.log(`stdout: ${data}`);
-
-    //     // inputs.forEach(input => {
-    //     //     nist.stdin.write(input+"\n")
-    //     // });
-    // });
-
-    // nist.stderr.on('data', (data) => {
-    //     console.error(`stderr: ${data}`);
-    // });
 
     console.log('done')
 
-    // ls.on('close', (code) => {
-    //     console.log(`child process exited with code ${code}`);
-    //     // ws<-id x is done
-
-    // });
 })
+
+app.post('/cmc',upload.single('recfile'), (req, res) => {
+
+    console.log("filename: " + req.file.filename)
+
+    console.log(req.body.email)
+
+    res.status(200).send({
+        id: ++id
+    })
+
+    let cmc = spawn('wsl', ['ngspice', req.file.filename], {
+        cwd: './data/uploads/'
+    })
+
+    cmc.stdin.setEncoding('utf-8')
+
+    cmc.stdout.pipe(process.stdout)
+
+    const logging = fs.createWriteStream(`./data/logs/${req.file.filename.split('.')[0]}.log`, { flags: 'a' });
+    cmc.stdout.pipe(logging);
+
+    cmc.stdout.on('data', (data) => {
+        console.log('stdout')
+        console.log(data.toString())
+    })
+
+    cmc.stderr.on('data', function (data) {
+        console.log('stderr: ' + data.toString());
+    })
+
+    cmc.on('exit', function (code) {
+        console.log('child process exited with code ' + code.toString()); //if code = 1 dan file ophalen fs 
+        var mailOptions
+        if(code == 1){
+            mailOptions = {
+                from: 'nistoutput@gmail.com',
+                to: req.body.email,
+                subject: 'Latest CMC request succes',
+                text: 'This is the output file of your latest CMC request.',
+                attachments: [
+                    // {
+                    //    // filename and content type is derived from path
+                    //     path: __dirname + './../../sts-2.1.2/experiments/AlgorithmTesting/finalAnalysisReport.txt'
+                    // },
+                    {
+                        path: __dirname + `./../data/logs/${req.file.filename.split('.')[0]}.log`
+                    }
+                ]
+              };
+                
+              
+              
+        }else{
+            mailOptions = {
+                from: 'nistoutput@gmail.com',
+                to: req.body.email,
+                subject: 'Latest CMC Request fail',
+                text: 'Ur latest CMC request excited with an error, check the variables or file and try again.',
+                attachments: [
+                {
+                    path: __dirname + `./../data/logs/${req.file.filename.split('.')[0]}.log`
+                }
+            ]
+            }
+        }
+        mail.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+    })
+
+    cmc.stdin.end()
+
+
+    console.log('done')
+
+
+})
+
 
 await connect();
 
