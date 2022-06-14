@@ -19,6 +19,16 @@
         <each-sequence/>
       </div>
       <!-- end Step 3 -->
+      
+      <v-alert
+        class="ma-3"
+        v-if="showsendbox"
+        shaped
+        prominent
+        type="success"
+        >
+        Latest request is now being handled by the server.
+        </v-alert>
 
   
 
@@ -40,6 +50,7 @@ import FileUpload from '@/components/FileUpload.vue'
       return{
         step: 1,
         isFrequency: false, 
+        showsendbox: false,
       }
     },
 
@@ -78,6 +89,8 @@ import FileUpload from '@/components/FileUpload.vue'
             if( (this.step >= 4)){
               this.$store.dispatch("sendFileNIST")
               this.step = 1
+              this.showsendbox = true
+              setTimeout(() => this.showsendbox = false, 2000)
             }
 
           }

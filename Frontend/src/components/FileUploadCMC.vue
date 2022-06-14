@@ -31,6 +31,17 @@
         <v-row  class="ma-4 justify-space-around">
             <v-btn @click="sendFile" dark color="black">Submit file</v-btn>
         </v-row>
+
+        <v-alert    
+        class="ma-3"
+        v-if="showsendbox"
+        shaped
+        prominent
+        type="success"
+        >
+        Latest request is now being handled by the server.
+        </v-alert>
+
     </v-container>
 </template>
 
@@ -41,6 +52,7 @@ export default {
       return{
         file:null,
         notgood: false, 
+        showsendbox: false,
       }
     },
     methods: {
@@ -52,7 +64,9 @@ export default {
             {
                 this.$store.dispatch('updateCMCFile', this.file)
                 this.$store.dispatch('sendFileCMC')
-                this.data.file = null
+                this.file = null
+                this.showsendbox = true
+                setTimeout(() => this.showsendbox = false, 2000)
             }
         }   
 
