@@ -27,7 +27,7 @@
         prominent
         type="success"
         >
-        Latest request is now being handled by the server.
+        Latest request is now being handled by the server. You will shortly receive a mail with the results
         </v-alert>
 
   
