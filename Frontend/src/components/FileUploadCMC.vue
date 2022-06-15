@@ -46,6 +46,7 @@
 </template>
 
 <script>
+//Cmc upload component, used to upload a the ngspice file to the server.
 export default {
     name: 'FileUploadCMC',
     data(){

@@ -1,3 +1,4 @@
+//Api that provides all axios requests and posts to the backend
 import axios from 'axios';
 
 const api = axios.create({

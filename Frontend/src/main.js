@@ -1,3 +1,4 @@
+//Entery of the application, this project uses Vue.js to create the frontend.
 import Vue from 'vue'
 import Vuex from "vuex"
 import App from './App.vue'

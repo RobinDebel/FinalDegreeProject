@@ -23,8 +23,7 @@ export default {
         },
     },
     beforeCreate() {
-    
-
+    //Checking if the user is logged in, if not, redirect to login page.
      this.$store.dispatch("askSecure")
       .then((res) => {
         if(!res.data.secure){

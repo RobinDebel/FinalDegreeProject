@@ -16,8 +16,8 @@ export const store =  new Vuex.Store({
 
   },
 
+  //getters are used to access the state
   getters:{
-    
     staticalTestChoice(state) {
       return state.staticalTestChoice;
     },
@@ -56,12 +56,17 @@ export const store =  new Vuex.Store({
 
   },
 
+
   actions: {
 
+    //This action is called to send the CMC file to the backend
     sendFileCMC(){
+      //Making a form data object to send the file, and user email
       let form = new FormData()
       form.append("recfile", this.state.cmcfile)
       form.append("email", this.state.user.email)
+
+      //Calling the finalproject.js api to send the file
       CMC.sendFile(form).then((response) => {
         console.log(response)
         })
@@ -70,11 +75,15 @@ export const store =  new Vuex.Store({
         });
     },
 
+    //This action is called to send the NIST file to the backend
     sendFileNIST(){
+      //Making a form data object to send the file, inputs and user email
       let form = new FormData()
       form.append("recfile", this.state.file)
       form.append("inputs", this.state.inputs)
       form.append("email", this.state.user.email)
+
+      //Calling the finalproject.js api to send the file
       Nist.sendFile(form)
       .then((response) => {
         console.log(response)
@@ -84,6 +93,7 @@ export const store =  new Vuex.Store({
         });
     },
 
+    //This action is called to register a new user
     register(state, payload){
       return Authentication.register(payload)
       .then((res) => {
@@ -91,6 +101,7 @@ export const store =  new Vuex.Store({
       })
     },
 
+    //This action is called to login a user
     login(state,payload) { 
       return Authentication.login(payload)
       .then((res) => {
@@ -104,6 +115,7 @@ export const store =  new Vuex.Store({
       })
     },
 
+    //This action is called to logout a user
     logout() {
       Authentication.logout()
       .then(()=> {
@@ -112,6 +124,7 @@ export const store =  new Vuex.Store({
       })
     },
 
+    //This action is called to check if the user is logged in, and provide the user object
     askSecure() {
       return Authentication.secure()
       .then((res) => {
@@ -121,6 +134,7 @@ export const store =  new Vuex.Store({
         return res
       })
     },
+
 
     updateStaticalTestChoice(store,payload){
       this.commit('changeStaticalTestChoice', payload)
@@ -142,7 +156,6 @@ export const store =  new Vuex.Store({
       this.commit('addInputs', String(payload))
       console.log(state.state.inputs)
     },
-
 
     resetNIST(){
       this.commit('changeFile', null)

@@ -3,6 +3,7 @@
 </template>
 
 <script>
+// View to load LoginOrRegister.vue
 import LoginOrRegister from '@/components/LoginOrRegister.vue'
 export default {
     name: "RegisterLogin",

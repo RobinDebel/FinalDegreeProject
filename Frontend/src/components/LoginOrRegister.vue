@@ -73,6 +73,7 @@
 </template>
 
 <script>
+// Login page. This page is used to login or register a new user.
 export default {
     name: "LoginOrRegister",
     data(){
@@ -86,17 +87,21 @@ export default {
         }
     },
     methods: {
+        // This function is called when the user presses the login or register button. The text in the button changes but the button needs to handle both cases.
         LoginRegister(){
             this.notgood = false
 
+            //When the user wants to login
             if(this.screen == "Login"){
                 
+                //Checking if everything is provided, otherwise the user will be alerted.
                 if(this.email == "" || this.password == "" )
                 {
                     this.notgood = true
                     this.notgoodtext = "Please fill in everything"
                 }
 
+                //When everything is provided, the user will be logged in.
                 if(!this.notgood){
                     const json = {
                     email: this.email,
@@ -106,27 +111,29 @@ export default {
                     this.$store.dispatch("login", json)
                     .then((res) =>{
                         
+                        //Response from the server, indicating login was unsuccessful.
                         if(res == undefined){
                             this.notgood = true
                             this.notgoodtext = "Credentials not ok"
                         }
+                        //Response from the server, indicating login was successful.
                         if(res && res.status == 200){
                             this.$router.push({name: 'Home'})
                         }
                     })
                 }
-
-                
-
             }
+            //When the user wants to register
             if(this.screen == "Register"){
 
+                //Checking if everything is provided, otherwise the user will be alerted.
                 if(this.email == "" || this.username == "" || this.password == "")
                 {
                     this.notgood = true
                     this.notgoodtext = "Please fill in everything"
                 }
 
+                //When everything is provided, the user will be registered.
                 if(!this.notgood){
                     const json = {
                     email: this.email,
@@ -149,7 +156,7 @@ export default {
         }
     },
     beforeCreate() {
-
+        //Checking if the user is logged in, if not, redirect to login page.
         this.$store.dispatch('askSecure')
         .then((res)=> {
             if (res.data.secure){

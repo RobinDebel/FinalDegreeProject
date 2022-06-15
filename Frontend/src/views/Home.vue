@@ -3,12 +3,9 @@
 </template>
 
 <script>
-
-
-
+// Homepage that is not used in the project, due to time constraints.
   export default {
     name: 'Home',
-
 
     beforeCreate() {
 

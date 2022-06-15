@@ -46,6 +46,7 @@
 </template>
 
 <script>
+//Nist upload component, used to upload a the NIST file to the server.
 export default {
     name: 'FILEUPLOAD',
     data(){

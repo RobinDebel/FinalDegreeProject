@@ -6,6 +6,7 @@
 </template>
 
 <script>
+// View to load FileUploadCMC.vue
 import FileUploadCMC from '@/components/FileUploadCMC.vue'
 
   export default {
@@ -13,7 +14,7 @@ import FileUploadCMC from '@/components/FileUploadCMC.vue'
 
     name: 'CMC',
     beforeCreate() {
-
+      //Checking if the user is logged in, if not, redirect to login page.
       this.$store.dispatch("askSecure")
       .then((res) => {
         if(!res.data.secure){
