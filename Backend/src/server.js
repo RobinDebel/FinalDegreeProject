@@ -331,6 +331,30 @@ app.post('/cmc',upload.single('recfile'), (req, res) => {
 
 })
 
+//delete files every 10 minutes
+setInterval(() => {
+    fs.readdir('./data/uploads/', (err, files) => {
+        files.forEach(file => {
+            fs.unlink(`./data/uploads/${file}`, err => {
+                if (err) throw err;
+            })
+        })
+    })
+}
+, 600000)
+
+setInterval(() => {
+    fs.readdir('./data/logs/', (err, files) => {
+        files.forEach(file => {
+            fs.unlink(`./data/uploads/${file}`, err => {
+                if (err) throw err;
+            })
+        })
+    })
+}
+, 600000)
+
+
 
 await connect();
 
