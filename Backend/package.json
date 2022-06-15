@@ -1,7 +1,7 @@
 {
-  "name": "device-creator-backend",
+  "name": "nist-cmc-backend",
   "version": "1.0.0",
-  "description": "Backend for Device Creator",
+  "description": "Backend for NIST and CMC by Robin Debel & Seppe De Witte",
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon --ignore ./data src/server.js",

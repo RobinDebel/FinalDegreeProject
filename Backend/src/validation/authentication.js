@@ -1,3 +1,4 @@
+// Providing authentication scheme to check if incomming api request is valid
 const AuthenticationSchema = {
   register: {
     body: {
