@@ -282,7 +282,7 @@ provided in the addendum section of the documentation.
 
    Enter Choice: 
 
-		User Prescribed Input File: 
+User Prescribed Input File: 
                 S T A T I S T I C A L   T E S T S
                 _________________________________
 
@@ -390,4 +390,32 @@ provided in the addendum section of the documentation.
 
 ### CMC
 
+![img](img/2022-06-15-14-40-39.png)
+
+![send](img/2022-06-15-14-41-58.png)
+
+When everything works you should receive the following mail:
+
+![mail](img/2022-06-15-14-42-33.png)
+
+In the mail are following attachments:
+
+* `1655296912363rcladder.log`
+
+```text
+
+Circuit: Simple attenuator circuit
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+v(a) = 1.000000e+02
+v(b) = 5.000000e+01
+v(a,b) = 5.000000e+01
+i(v1) = -5.00000e+00
+```
+
 ### Profile
+
+![Profile](img/2022-06-15-14-45-55.png)
