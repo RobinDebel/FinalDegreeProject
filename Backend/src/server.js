@@ -1,3 +1,4 @@
+//Importing libraries
 import express from 'express';
 import config from './config/config.js';
 import morgan from 'morgan';
@@ -19,14 +20,13 @@ import { fileURLToPath } from 'node:url';
 import path from 'path';
 import fs from 'fs';
 
-
-
-
-
-
+//Initializing express
 const app = express();
+
+//Initializing Port
 const PORT = config.server.port;
 
+//Making the app use the cors middleware to allow cross-origin requests
 app.use(cors({credentials:true, origin: [/localhost/]}))
 
 //use nice middleware logging from request
@@ -47,9 +47,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Email server
-
-
+// Email server configuration:
 var mail = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -58,12 +56,13 @@ var mail = nodemailer.createTransport({
     }
     });
 
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 
 
-
+//Api get request (check if backend is working)
 app.get('/', (req,res) => {
     res.send({
         message: 'Welcome to Device Creator API',
@@ -71,17 +70,21 @@ app.get('/', (req,res) => {
     })
 })
 
+//Initializing multer for file uploads
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        //Providing upload directory
         cb(null, './data/uploads')
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + file.originalname) //Appending extension
+        //Using date.now() to make sure the file name is unique and keeping the original filename so the extension is preserved
+        cb(null, Date.now() + file.originalname) 
     }
 })
 
 const upload = multer({storage: storage})
 
+//Api post request (Registering new user)
 app.post('/register', (req, res, next) => {
     // Never, ever thrust client side data !
     console.log(req.body)
@@ -108,6 +111,7 @@ app.post('/register', (req, res, next) => {
         })
 });
 
+//Api post request (Logging in user)
 app.post('/login', (req, res, next) => {
     
     const validation = validate(req.body, AuthenticationSchema.login.body)
@@ -131,10 +135,12 @@ app.post('/login', (req, res, next) => {
     })(req, res, next);
 })
 
+//Api get request (Logging out user)
 app.get('/logout', (req, res, next) => {
     res.clearCookie('connect.sid', {path: '/'}).status(200).send('Ok.');
 })
 
+//Api get request (Checking if user is logged in and has a valid session, also providing user information)
 app.get('/secure', is_authenticated, (req, res) => {
     res.send({
       message: 'Welcome to this secure route',
@@ -145,44 +151,36 @@ app.get('/secure', is_authenticated, (req, res) => {
 
 var id = 0
 
+// Api request for NIST
 app.post('/nist',upload.single('recfile'), (req, res) => {
-   console.log("filename: " + req.file.filename)
 
-   console.log(req.body.email)
-
-    
-    
+    //response to the client
     res.status(200).send({
         id: ++id
     })
     
-    
+    //Inputs provided from the client to put in the command line of the NIST program
     var inputs = req.body.inputs.split(",")    // []string -> ['0', 'data/data.pi', '1', '1', '100', '0', ...]
     let cmd = inputs[0]        // []string -> ['100000']
     inputs.shift()
     
-    // const args = [0, `../Backend/data/uploads/data.pi`, ...inputs]
+    //Adding the file path to the inputs
     const args = [0, `../Backend/data/uploads/${req.file.filename}`, ...inputs]
-    // const args = [0, `data/data.pi`, '1', '0', '10', '0']
-    
-    console.log(cmd)
-    console.log(args)
-    console.log('wsl', './assess', cmd)
 
-    // let nist = spawn('wsl', ['ls', '-lsa'], {
+    //Spawning child process running the NIST program
     let nist = spawn('wsl', ['./assess', cmd], {
         cwd: '../sts-2.1.2'
     })
 
+    //Setting up the child process to listen for data
     nist.stdin.setEncoding('utf-8')
 
+    //Logging output from the child process
     nist.stdout.pipe(process.stdout)
-
     const logging = fs.createWriteStream(`./data/logs/${req.file.filename.split('.')[0]}.log`, { flags: 'a' });
     nist.stdout.pipe(logging);
 
-    let i = 0
-
+    //Looping over every input and sending it to the child process
     args.forEach((arg) => {
         nist.stdin.write(arg+'\n')
     })
@@ -198,9 +196,11 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
         console.log('stderr: ' + data.toString());
     })
       
+    //When the child process is done, the files are mailed to the user.
     nist.on('exit', function (code) {
-        console.log('child process exited with code ' + code.toString()); //if code = 1 dan file ophalen fs 
+        console.log('child process exited with code ' + code.toString()); //logging the exit code
         var mailOptions
+        //Sending the email to the user based on the exit code
         if(code == 1){
             mailOptions = {
                 from: 'nistoutput@gmail.com',
@@ -209,18 +209,18 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
                 text: 'This is the output file of your latest NIST request.',
                 attachments: [
                     {
-                       // filename and content type is derived from path
+                       // Analysis Report
                         path: __dirname + './../../sts-2.1.2/experiments/AlgorithmTesting/finalAnalysisReport.txt'
                     },
                     {
+                        // Log file of the NIST program
                         path: __dirname + `./../data/logs/${req.file.filename.split('.')[0]}.log`
                     }
                 ]
               };
-                
-              
-              
+
         }else{
+            
             mailOptions = {
                 from: 'nistoutput@gmail.com',
                 to: req.body.email,
@@ -228,11 +228,13 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
                 text: 'Ur latest NIST request excited with an error, check the variables or file and try again.',
                 attachments: [
                 {
+                    // Log file of the NIST program
                     path: __dirname + `./../data/logs/${req.file.filename.split('.')[0]}.log`
                 }
             ]
             }
         }
+        //Sending the email
         mail.sendMail(mailOptions, function(error, info){
                 if (error) {
                   console.log(error);
@@ -242,6 +244,7 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
               });
     })
 
+    //Exiting the child process
     nist.stdin.end()
 
 
@@ -249,24 +252,23 @@ app.post('/nist',upload.single('recfile'), (req, res) => {
 
 })
 
+//Api request for CMC (We messed this up and are just running ngspice on the send file)
 app.post('/cmc',upload.single('recfile'), (req, res) => {
 
-    console.log("filename: " + req.file.filename)
-
-    console.log(req.body.email)
-
+    //response to the client
     res.status(200).send({
         id: ++id
     })
 
+    //Spawning child process running NGSPICE program
     let cmc = spawn('wsl', ['ngspice', req.file.filename], {
         cwd: './data/uploads/'
     })
 
     cmc.stdin.setEncoding('utf-8')
 
+    //Logging output from the child process
     cmc.stdout.pipe(process.stdout)
-
     const logging = fs.createWriteStream(`./data/logs/${req.file.filename.split('.')[0]}.log`, { flags: 'a' });
     cmc.stdout.pipe(logging);
 
@@ -279,9 +281,11 @@ app.post('/cmc',upload.single('recfile'), (req, res) => {
         console.log('stderr: ' + data.toString());
     })
 
+    //When the child process is done, the files are mailed to the user.
     cmc.on('exit', function (code) {
-        console.log('child process exited with code ' + code.toString()); //if code = 1 dan file ophalen fs 
+        console.log('child process exited with code ' + code.toString()); //logging the exit code
         var mailOptions
+        //Sending the email to the user based on the exit code
         if(code == 1){
             mailOptions = {
                 from: 'nistoutput@gmail.com',
@@ -289,11 +293,9 @@ app.post('/cmc',upload.single('recfile'), (req, res) => {
                 subject: 'Latest CMC request succes',
                 text: 'This is the output file of your latest CMC request.',
                 attachments: [
-                    // {
-                    //    // filename and content type is derived from path
-                    //     path: __dirname + './../../sts-2.1.2/experiments/AlgorithmTesting/finalAnalysisReport.txt'
-                    // },
+
                     {
+                        // Log file of the NGSPICE program
                         path: __dirname + `./../data/logs/${req.file.filename.split('.')[0]}.log`
                     }
                 ]
@@ -314,6 +316,7 @@ app.post('/cmc',upload.single('recfile'), (req, res) => {
             ]
             }
         }
+        //Sending the email
         mail.sendMail(mailOptions, function(error, info){
                 if (error) {
                   console.log(error);
@@ -323,15 +326,14 @@ app.post('/cmc',upload.single('recfile'), (req, res) => {
               });
     })
 
+    //Exiting the child process
     cmc.stdin.end()
 
 
     console.log('done')
-
-
 })
 
-//delete files every 10 minutes
+//deleting the files every 10 minutes
 setInterval(() => {
     fs.readdir('./data/uploads/', (err, files) => {
         files.forEach(file => {
@@ -340,10 +342,6 @@ setInterval(() => {
             })
         })
     })
-}
-, 600000)
-
-setInterval(() => {
     fs.readdir('./data/logs/', (err, files) => {
         files.forEach(file => {
             fs.unlink(`./data/uploads/${file}`, err => {
@@ -351,10 +349,9 @@ setInterval(() => {
             })
         })
     })
+
 }
 , 600000)
-
-
 
 await connect();
 
